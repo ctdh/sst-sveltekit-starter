@@ -9,13 +9,13 @@ There is also [/future/auth](https://github.com/sst/sst/blob/043401b355aea03f3f6
 
 This includes a server side infrastructure applied to the api according to the handlers we create in [/auth.ts](./packages/functions/src/auth.ts).  In this starter we have created handlers for Google and Magiclink.
 
-So authentication is validating the user logging in is in possession of the email address they claim and that they are a userType 'user' rather than userType 'public'
+So authentication is validating that the user logging in has possession of the email address they claim and that they are a userType 'user' rather than userType 'public'.
 
 ## Authorisation
 
-We have implemented a simple role-based system that allows a user to adopt a number of roles (eg ADMIN, ROLE1 etc).  Roles are comma separeted listed in the roles atribute of the [user table](/packages/functions/migrations/first.mjs).
+We have implemented a simple role-based system that allows a user to adopt a number of roles (eg ADMIN, ROLE1 etc).  Roles are comma separeted listed in the roles atribute of the [user table](/packages/functions/migrations/first.mjs) at the moment.
 
-Roles are defined in the [/type.ts](/packages/frontend/src/lib/types.ts) file. Role ADMIN is used to manage access to the user table so, do not replace it.
+Roles are defined in the [/type.ts](./packages/core/types/src/users) file. Role ADMIN is used to manage access to the user table so, do not replace it.
 
 Here are some .env options to help manage setting up roles.  Use the [/.env.local](/.env.local) file in local dev environments and use the [env varibale options in seed](https://seed.run/blog/stage-environment-variables.html) in deployed environemnts.
 
