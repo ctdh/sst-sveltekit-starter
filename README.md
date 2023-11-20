@@ -14,12 +14,19 @@ Create /.env.local or set in Seed or CI/CO
 # port for the localstack ususally 5173 for svelte
 PORT: 5173
 
-# SelfRegistration: true: (default) allows users to register themselves
-# false: users logging in must have their email already in the user db
+# Application name
+APP_NAME: My Appname in /.env.local
+
+# SelfRegistration: true allows users to register themselves
+# false users logging in must have their email already in the user db
 SELF_REG: true
 
-# When this email registers it is granted the role in the ADMIN_USER_ROLE
-ADMIN_USER_EMAIL: me@mydomain.com
+# First user to be created when the server starts with role
+FIRST_USER_ROLE: ADMIN
 
-# The role associated with Administrators and asigned to ADMIN_USER_EMAIL user. ADMIN (default)
-ADMIN_USER_ROLE: ADMIN
+# Set first user email
+FIRST_USER_EMAIL: web@pathwayanalytics.com
+
+# TOTO: 
+# ManualRegistration:
+MANUAL_REG:
