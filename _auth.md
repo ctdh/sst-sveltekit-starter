@@ -59,10 +59,11 @@ The handlers create endpoints on the api as follows
 ## Auth Flow
 
 The flow is as follows:
+![Auth Flow Process](./assets/Auth%20Flows-Auth%20Process%20Flow.drawio.png)
 
 ### Google
 
-![Auth Flow Diagram](./assets/Auth%20Flows-Google.drawio.png)
+![Google Auth Flow Diagram](./assets/Auth%20Flows-Google.drawio.png)
 
 From login form  
 Client -> ../auth/google/authorize
