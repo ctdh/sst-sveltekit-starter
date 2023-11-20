@@ -23,11 +23,11 @@ SELF_REG:
 ***true***:  User logins will all be stored in user db table  
 ***false***: User loigns will not be stored in db table - role.ADMIN must create user with email.
 
-FIRST_USER_ROLE: ADMIN  
-When the first user successfully logs in they are assigned with the **<span style="color:red;">ADMIN role!!</span>**.  Leave empty to avoide this.
+ADMIN_USER_ROLE: ADMIN  
+The user registering with ADMIN_USER_EMAIL will be automatically assigned this role.
 
-FIRST_USER_EMAIL: \web@pathwayanalytics.com  
-Sets a user with the given email and gives them the role ADMIN
+ADMIN_USER_EMAIL: web@mydomain.com
+The user registering with this email will be assigend the ADMIN_USER_ROLE
 
 ## userStore
 
@@ -62,7 +62,7 @@ The flow is as follows:
 
 ### Google
 
-![Auth Flow Diagram](https://sst.dev/assets/examples/api-sst-auth-google/auth-flow.png)
+![Auth Flow Diagram](./assets/Auth%20Flows-Google.drawio.png)
 
 From login form  
 Client -> ../auth/google/authorize
@@ -84,6 +84,9 @@ and redirects to https://mydomain.com/
 +layout checks to see that user is already registered and what roles they have
 
 ### Linkadapter
+
+![Link Auth Flow Diagram](./assets/Auth%20Flows-Magiclink.drawio.png)
+
 
 From login form  
 Client (email)-> ../auth/link/authorize
