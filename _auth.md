@@ -26,7 +26,7 @@ SELF_REG:
 ADMIN_USER_ROLE: ADMIN  
 The user registering with ADMIN_USER_EMAIL will be automatically assigned this role.
 
-ADMIN_USER_EMAIL: web@mydomain.com
+ADMIN_USER_EMAIL: web@mydomain.com  
 The user registering with this email will be assigend the ADMIN_USER_ROLE
 
 ## userStore
@@ -39,10 +39,11 @@ Roles can be applied to any element in the frontend including +layout.svelte to 
 
 We have implemented a simple +layout.svelte to handle user management and provide an example of implement user role-driven navigation.
 
-/login [] 
+/login []  
+/dashboard [any]  
 /admin [ADMIN]  
-/role1 [ROLE_1]
-/role2 [ROLE_2]
+/role1 [ROLE_1]  
+/role2 [ROLE_2]  
 /role3 [ROLE_3]
 
 You can define the roles required to access an element with restrictedTo(Roles[])

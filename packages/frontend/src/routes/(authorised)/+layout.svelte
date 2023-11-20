@@ -1,4 +1,9 @@
 <script>
+    // TODO:
+    // Cleanup
+    // update menu with logout
+    // redirect if not logged in
+
     import { AppShell, AppBar } from '@skeletonlabs/skeleton';    
     import NavBar from '../../components/NavBar.svelte';
 </script>

@@ -1,4 +1,9 @@
 <script lang="ts">
+// TODO:
+    // Cleanup
+    // Restrict to ADMIN, ROLE1
+
+
     // import { writable } from 'svelte/store';
     import type { User  } from '$shared_types/types/index';
     import  { Role } from '$shared_types/types/index';
