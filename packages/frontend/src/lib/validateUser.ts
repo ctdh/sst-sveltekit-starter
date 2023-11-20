@@ -44,17 +44,7 @@ export async function altAuth(token:string | null){
 }
 
 // This is the Auth flow...
-// Initialize auth flow (claim: email): client -> /auth [authHandler]
-// Redirect to auth provider /auth -> Google etc or /auth/link
-// Auth success: /Google -> /auth or email Link -> /auth/link
-// Session token: /auth -> client
-// Check credentials: (sessionToken): client -> /session
-// User credentials: /session -> client
-// Since anyone can 'login' with any email
-
-// Session checks if the email is already registered
-// sets userInfo in the session store and checks user roles
-// if, no roles sessionToken expired then logout
+// ./Auth Flows-Auth Process Flow.drawio.png
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
 

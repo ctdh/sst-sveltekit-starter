@@ -26,8 +26,8 @@ const getSessionParameter = (userId: string) => {
             expiresIn: 60 * 60 * 24 , // 1 day
         },
 
-        // rdirect to the provider page without any query string
-        // redirect: `${Config.SITE_URL}/provider`
+        // rdirect to the / page without any query string
+        // redirect: `${Config.SITE_URL}/`
         redirect: `${Config.SITE_URL}/provider`
     });
     console.log('onSucess -- getSessionParameter', `redirecting...${Config.SITE_URL}/provider`);
@@ -71,7 +71,7 @@ export const handler = AuthHandler({
                 console.log('claims', claims.email);
                 const appName = process.env.VITE_APP_NAME;
                 const recipient = claims.email as string;
-                const sender = process.env.VITE_APP_ADMIN_USER_EMAIL;
+                const sender = process.env.VITE_APP_ADMIN_USER_EMAIL || '';
                 const subject = `Login Link from ${appName}`;
                 const textBody = `Hello ${claims.email.split('@')[0]},\n\nHere is your login link: ${link}\n\nPlease use it right away\n\nThanks,\nPathway Analytics}`;
                 const htmlBody = ` 
