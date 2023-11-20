@@ -10,7 +10,9 @@ This starter includes the standard SST set up including the following stacks
 Before running dev or deploying set these environment parameters:
 Set environment:
 Create /.env.local or set in Seed or CI/CO
-```
+
+```bash
+// .env.local
 # port for the localstack ususally 5173 for svelte
 PORT: 5173
 
