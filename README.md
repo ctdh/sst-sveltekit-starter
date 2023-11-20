@@ -21,12 +21,8 @@ APP_NAME: My Appname in /.env.local
 # false users logging in must have their email already in the user db
 SELF_REG: true
 
-# First user to be created when the server starts with role
-FIRST_USER_ROLE: ADMIN
+# Role assigned to ADMIN_USER_EMAIL
+ADMIN_USER_ROLE: ADMIN
 
-# Set first user email
-FIRST_USER_EMAIL: web@pathwayanalytics.com
-
-# TOTO: 
-# ManualRegistration:
-MANUAL_REG:
+# User registering with this email will be assigned ADMIN_USER_ROLE
+ADMIN_USER_EMAIL: web@mydomain.com
