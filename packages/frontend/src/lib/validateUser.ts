@@ -149,7 +149,7 @@ async function getUserInfo(token:string | null): Promise<User> {
         });
         addError(`9. getUserInfo response.ok:  ${response.ok}`)
         // TODO: Fix this
-        // session response from server is ession_response: '{"userInfo":{"id":"b890b605-5211-4cad-a3a0-f88c4e43c7c8","email":"web@pathwayanalytics.com","picture":null,"first_name":null,"last_name":null},"type":"user"}'
+        // session response from server is ession_response: '{"userInfo":{"id":"b890b605-5211-4cad-a3a0-f88c4e43c7c8","email":"web@mydomain.com","picture":null,"first_name":null,"last_name":null},"type":"user"}'
         // response.json() is {"userId":"b890b605-5211-4cad-a3a0-f88c4e43c7c8","type":"user"}
         
         
