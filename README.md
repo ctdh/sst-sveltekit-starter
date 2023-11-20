@@ -28,3 +28,8 @@ ADMIN_USER_ROLE: ADMIN
 
 # User registering with this email will be assigned ADMIN_USER_ROLE
 ADMIN_USER_EMAIL: web@mydomain.com
+```
+
+[Auth flows](./_auth.md)
+
+[TODO:](./TODO.md)
