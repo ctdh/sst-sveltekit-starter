@@ -15,7 +15,7 @@ So authentication is validating that the user logging in has possession of the e
 
 We have implemented a simple role-based system that allows a user to adopt a number of roles (eg ADMIN, ROLE1 etc).  Roles are comma separeted listed in the roles atribute of the [user table](/packages/functions/migrations/first.mjs) at the moment.
 
-Roles are defined in the [/type.ts](./packages/core/types/src/users) file. Role ADMIN is used to manage access to the user table so, do not replace it.
+Roles are defined in the [/type.ts](./packages/types/src/users.ts) file. Role ADMIN is used to manage access to the user table so, do not replace it.
 
 Here are some .env options to help manage setting up roles.  Use the [/.env.local](/.env.local) file in local dev environments and use the [env varibale options in seed](https://seed.run/blog/stage-environment-variables.html) in deployed environemnts.
 
