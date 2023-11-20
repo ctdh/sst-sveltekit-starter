@@ -69,16 +69,17 @@ export const handler = AuthHandler({
                 // await sendEmail(claims.email, link); 
                 // replace 'recipient@example.com' with the recipient's email address
                 console.log('claims', claims.email);
+                const appName = process.env.VITE_APP_NAME;
                 const recipient = claims.email as string;
-                const sender = 'web@pathwayanalytics.com';
-                const subject = 'Login Link from Pathway Analytics';
-                const textBody = `Hello ${claims.given_name},\n\nHere is your login link: ${link}\n\nPlease use it right away\n\nThanks,\nPathway Analytics}`;
+                const sender = process.env.VITE_APP_ADMIN_USER_EMAIL;
+                const subject = `Login Link from ${appName}`;
+                const textBody = `Hello ${claims.email.split('@')[0]},\n\nHere is your login link: ${link}\n\nPlease use it right away\n\nThanks,\nPathway Analytics}`;
                 const htmlBody = ` 
                 <h1>Hello ${claims.email.split('@')[0]},</h1> 
                 <p>Here is your login link: <a href="${link}">Login</a></p> 
                 <p>Please use it right away</p> 
                 <p>Thanks,</p> 
-                <p>Pathway Analytics</p> 
+                <p>${appName}</p> 
                 `;
                 sendEmail(recipient, sender, subject, textBody, htmlBody)
                 .then(data => console.log('Email sent successfully', data))

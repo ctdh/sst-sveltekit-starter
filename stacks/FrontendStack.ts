@@ -20,8 +20,8 @@ export function FrontendStack({ stack, app }: StackContext) {
 
             VITE_APP_NAME: process.env.APP_NAME || '',
             VITE_APP_SELF_REG: process.env.SELF_REG || 'false',
-            VITE_APP_FIRST_USER_ROLE: process.env.FIRST_USER_ROLE || '',
-            VITE_APP_FIRST_USER_EMAIL: process.env.FIRST_USER_EMAIL || '',
+            VITE_APP_ADMIN_USER_ROLE: process.env.ADMIN_USER_ROLE || '',
+            VITE_APP_ADMIN_USER_EMAIL: process.env.ADMIN_USER_EMAIL || '',
             // TODO: VITE_APP_MANUAL_REG: process.env.MANUAL_REG || 'false',
         },
     
