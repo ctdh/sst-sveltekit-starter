@@ -31,7 +31,7 @@ The user registering with this email will be assigend the ADMIN_USER_ROLE
 
 ## userStore
 
-The [userStore](/packages/frontend/src/lib/stores/user.ts) handles the storing of the current [User](/packages/frontend/src/lib/types.ts) information, including email and any roles.  The store is available throughout the frontend app and the client session.
+The [userStore](/packages/frontend/src/lib/stores/user.ts) handles the storing of the current [User](/packages/frontend/src/lib/user.ts.ts) information, including email and any roles.  The store is available throughout the frontend app and the client session.
 
 ## Applying Roles
 
@@ -102,7 +102,6 @@ Link handler onSuccess
 \- sends  session state -> Client  
 \- else  
 \- sends temporary session state -> Client and redirects to https://mydomain.com/
-
 
 \- If SELF_REG = true  
 +layout manages roles and validates session as required
