@@ -1,0 +1,33 @@
+{
+  "name": "sst-template",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sst dev",
+    "build": "sst build",
+    "deploy": "sst deploy",
+    "remove": "sst remove",
+    "console": "sst console",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.2",
+    "aws-cdk-lib": "2.101.1",
+    "constructs": "10.2.69",
+    "sst": "2.36.1",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@aws-sdk/client-rds-data": "^3.451.0",
+    "@aws-sdk/client-ses": "^3.451.0",
+    "aws-sdk": "^2.1494.0",
+    "kysely": "^0.26.3",
+    "kysely-data-api": "^0.2.1",
+    "uuidv4": "^6.2.13"
+  }
+}
