@@ -1,12 +1,12 @@
 <script lang='ts'>
     import Login from './login.svelte'
     import Waiting from './waiting.svelte'
-    import { isSigningIn } from './store';
+    import { authState } from './store';
     
     
 
 </script>
-{#if !$isSigningIn }
+{#if !$authState.isSigningIn }
 <Login />
 {:else}
 <Waiting />

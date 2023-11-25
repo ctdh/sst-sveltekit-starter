@@ -1,17 +1,40 @@
 import { ApiHandler } from 'sst/node/api';
 import { useSession } from 'sst/node/auth';
-import { getUserByID } from '../../../core/src/users';
+import { User } from '../../../core/user';
 
-export const handler = ApiHandler(async () => {
-// returns user info of userid 
-// TODO:
-// get user from session
-// unless user.role === 'admin' then 
-// get user from db by id is user.id === session.userid
+export const main = ApiHandler(async (event) => {
+	// returns user info of userid 
 
-    return {
-		statusCode: 200,
-		body: JSON.stringify({ 
-		 })
-	};
+	const session = useSession();
+	if ( !session?.type || session.type === 'public' ) {
+		console.log(' --/functions/src/users/get.ts API handler session.type: ' + session?.type);
+		return {
+			redirect: '/login',
+			statusCode: 401,
+			body: 'Unauthorized user session.type'
+		};
+	} else if (!event.pathParameters) {
+
+	// we are being ambiguous about the data type here
+	// we want to allow get by id or get by email
+		
+		// !event.pathParameters as this is a GET request
+		// othrwise we would use !event.body
+		return {
+			statusCode: 400,
+			body: 'Badly formed request'
+		};		
+	} else {
+		let data:string
+		// takes first id or email
+		data = event.pathParameters.id||event.pathParameters.email||'';
+		const res = await User.getByIdOrEmail(data);
+
+		return {
+			statusCode: 200,
+			body: JSON.stringify(res)
+		};
+	}
+
+
 });

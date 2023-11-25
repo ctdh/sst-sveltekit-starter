@@ -8,7 +8,7 @@ export function AuthStack({ stack }: StackContext) {
     const { site, site_url } = use(FrontendStack);
     const { api } = use(ApiStack);
     const { role_SES } = use(FunctionStack);
-
+ 
     const auth: Auth = new Auth(stack, "Auth", {
         authenticator:{
             handler: "packages/functions/src/auth.handler",
@@ -24,12 +24,25 @@ export function AuthStack({ stack }: StackContext) {
                 }),
                 new Config.Parameter(stack, "API_URL", {
                     value: api.url ?? ''
+                }),
+                new Config.Parameter(stack, "APP_NAME", {
+                    value: process.env.APP_NAME ?? ''
+                }),
+                new Config.Parameter(stack, "ADMIN_USER_EMAIL", {
+                    value: process.env.ADMIN_USER_EMAIL ?? ''
+                }),
+                new Config.Parameter(stack, "ADMIN_USER_ROLE", {
+                    value: process.env.ADMIN_USER_ROLE ?? ''
+                }),
+                new Config.Parameter(stack, "SELF_REG", {
+                    value: (process.env.SELF_REG ?? '').toLowerCase()
                 })
             ],
         },
     });
     
     //pnpm sst secrets set GOOGLE_CLIENT_ID <YOUR GOOGLE_CLIENT_ID>
+
     auth.attach(stack, {
         api,
         prefix: "/auth", // optional

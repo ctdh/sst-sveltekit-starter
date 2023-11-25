@@ -9,7 +9,7 @@ There is also [/future/auth](https://github.com/sst/sst/blob/043401b355aea03f3f6
 
 This includes a server side infrastructure applied to the api according to the handlers we create in [/auth.ts](./packages/functions/src/auth.ts).  In this starter we have created handlers for Google and Magiclink.
 
-So authentication is validating that the user logging in has possession of the email address they claim and that they are a userType 'user' rather than userType 'public'.
+So authentication is validating that the user logging in has possession of the email address they claim.  The validatioon is confirmed by issueing signed token which is then stored in a secure, httpOnly cookie.  HttpOnly cookies are not available to read and write to in javascript in the client.
 
 ## Authorisation
 

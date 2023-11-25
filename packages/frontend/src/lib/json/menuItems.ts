@@ -1,4 +1,4 @@
-import { Role } from '$shared_types/types/index';
+import { Role } from '$shared_types';
 
 type MenuItem = {
     name: string;
@@ -17,28 +17,10 @@ export let menuItems: MenuItem[] = [
       description: 'Dashboard',
       icon: 'home',
       roles: [Role.ADMIN, Role.ROLE_1, Role.ROLE_2, Role.ROLE_3],
-      menuItems:[
-        {
-          name: 'Role1 Dashboard',
-          link: '/dashboard/role1',
-          isSelected: false,
-          description: 'Role1',
-          icon: 'Role1',
-          roles: [Role.ADMIN, Role.ROLE_1],
-        },
-        {
-          name: 'Role2 Dashboard',
-          link: '/dashboard/role2',
-          isSelected: false,
-          description: 'role2',
-          icon: 'users',
-          roles: [Role.ADMIN, Role.ROLE_2],
-        },
-      ]
     },
     {
       name: 'Role1',
-      link: '/Role1',
+      link: '/role1',
       isSelected: false,
       description: 'Role1',
       icon: 'users',

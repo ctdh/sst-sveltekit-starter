@@ -1,4 +1,7 @@
-// create a role type with 3 enum roles 
+import { Config } from "sst/node/config";
+
+// create a role type with enum roles 
+// match the ADMIN role with .env.local ADMIN_USER_ROLE
 export enum Role {
     ADMIN = 'ADMIN',
     ROLE_1 = 'ROLE_1',
@@ -17,7 +20,7 @@ export interface User {
   roles?: string | null; // comma separated string of roles
 }
 
-export interface Session{
+export interface SessionType{
   type: 'public' | 'user';
   properties: {
     userId: string;

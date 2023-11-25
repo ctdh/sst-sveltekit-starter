@@ -16,6 +16,11 @@ node ses_sendemail.js
 import { SendEmailCommand } from "@aws-sdk/client-ses";
 import { sesClient } from "./sesClient";
 
+const formatBody = (data: string) => ({
+  Charset: "UTF-8",
+  Data: data,
+});
+
 const sendEmail = async (recipient: string, sender: string, subject: string, textBody: string, htmlBody: string) => {
   const params = {
     Destination: {
@@ -23,19 +28,10 @@ const sendEmail = async (recipient: string, sender: string, subject: string, tex
     },
     Message: {
       Body: {
-        Text: {
-          Charset: "UTF-8",
-          Data: textBody,
-        },
-        Html: {
-          Charset: "UTF-8",
-          Data: htmlBody,
-        },
+        Text: formatBody(textBody),
+        Html: formatBody(htmlBody),
       },
-      Subject: {
-        Charset: "UTF-8",
-        Data: subject,
-      },
+      Subject: formatBody(subject),
     },
     Source: sender,
   };

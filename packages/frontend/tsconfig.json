@@ -11,9 +11,10 @@
 		"strict": true,
 		"moduleResolution": "bundler",
 		"paths": {
-			"$shared_types/types/*": ["../types/*","../types/" ],
+			"$shared_types": ["../types/" ],
 			"$lib":["./src/lib"],
 			"$lib/*":["./src/lib/*"],
+			"$components/*":["./src/components/*"],
   
 		}
 	}	

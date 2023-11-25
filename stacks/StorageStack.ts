@@ -14,7 +14,7 @@ export function StorageStack({ stack }: StackContext) {
   });
 
     // Create the Aurora DB cluster
-    const DATABASE = "PWA_DB";
+    const DATABASE = "MY_DB";
     const cluster = new RDS(stack, "Cluster", {
       engine: "postgresql13.9",
       defaultDatabaseName: DATABASE,

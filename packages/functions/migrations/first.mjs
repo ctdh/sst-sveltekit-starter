@@ -9,8 +9,8 @@ export async function up(db) {
 		.addColumn('id', 'text', (col) => col.primaryKey())
 		.addColumn('email', 'text', (col) => col.notNull())
 		.addColumn('picture', 'text')
-		.addColumn('first_name', 'text')
-		.addColumn('last_name', 'text')
+		.addColumn('firstName', 'text')
+		.addColumn('lastName', 'text')
 		.addColumn('roles', 'text')
 		.execute();
 }

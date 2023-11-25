@@ -14,7 +14,6 @@ An explanation of the project structure for sveltekit
 9. [/src/components](#components-directory-srccomponents)
 10. [/src/hooks](#hooks-directory-srchooks)
 11. [/src/utils](#utils-directory-srcutils)
-12. [/src/types](#types-directory-srctypes)
 
 
 ### Root Directory (/)
@@ -56,7 +55,3 @@ If you're using SvelteKit hooks (like handle, getSession, etc.), you might want 
 ### Utils Directory (/src/utils)
 
 For utility functions or helper modules that are used across different components or routes.
-
-### Types Directory (/src/types)
-
-A directory for TypeScript type definitions, especially for types that are used across different components or modules

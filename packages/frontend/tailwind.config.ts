@@ -1,6 +1,6 @@
 
 import type { Config } from 'tailwindcss';
-import { myCustomTheme } from './pwaTheme'
+import { myCustomTheme } from './myTheme'
 
 // 1. Import the Skeleton plugin
 import { skeleton } from '@skeletonlabs/tw-plugin';

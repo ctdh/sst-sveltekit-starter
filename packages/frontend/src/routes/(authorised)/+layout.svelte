@@ -1,16 +1,12 @@
-<script>
-    // TODO:
-    // Cleanup
-    // update menu with logout
-    // redirect if not logged in
+<script lang='ts'>
+	import { AppShell } from '@skeletonlabs/skeleton';
+    import NavBar from '$components/NavBar.svelte';
+    import { Spinner } from 'flowbite-svelte';
 
-    import { AppShell, AppBar } from '@skeletonlabs/skeleton';    
-    import NavBar from '../../components/NavBar.svelte';
 </script>
-
 <AppShell regionPage="relative" slotPageHeader="sticky top-0 z-10">
 	<svelte:fragment slot="header">
-        <NavBar />
+            <NavBar />
         <!-- <AppBar>
         </AppBar> -->
     </svelte:fragment>
@@ -26,7 +22,7 @@
     </svelte:fragment>
 	<!-- (pageHeader) -->
 	<!-- Router Slot -->
-	<slot />
+        <slot  />    
 	<!-- ---- / ---- -->
 	<!-- (pageFooter) -->
 	<svelte:fragment slot="footer">

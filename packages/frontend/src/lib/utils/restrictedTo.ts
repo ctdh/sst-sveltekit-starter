@@ -1,5 +1,4 @@
-import type { User, Role } from '$lib/types';
-import { getUserIdfromJWT } from '$lib/validateUser';
+import type { User, Role } from '$shared_types';
 import { userStore } from '$lib/stores/user';
 
 export function restrictedTo(Roles:Role[]){
@@ -11,22 +10,12 @@ export function restrictedTo(Roles:Role[]){
 
     const token = localStorage.getItem('token');
     if (!token) return false;
-    const jwtUserId = getUserIdfromJWT();
+    // const jwtUserId = getUserIdfromJWT();
     // declare userId as userStore.id
     const userId = userStore.subscribe((user:User | null) => user?.id);
     // declare userRoles as userStore.roles for use as a param in a function
     const csvUserRoles = userStore.subscribe((user:User | null) => user?.roles);
 
-    if (jwtUserId === userId) {
-        // check if the user has one of the roles in the Roles array
-        const matchingRoles = getMatchingRoles(csvUserRoles.toString(), Roles);
-        console.log('restrictedTo userRoles', csvUserRoles);
-        console.log('restrictedTo roleMatch', matchingRoles);
-        if (matchingRoles.length > 0)
-            return matchingRoles;
-        else
-            return false;
-    }
     return false;
 }
 

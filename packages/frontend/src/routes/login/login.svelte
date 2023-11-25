@@ -2,11 +2,11 @@
     import { writable } from 'svelte/store';
     import { env } from '$env/dynamic/public';
     import { onMount } from 'svelte';
-    import { isSigningIn } from './store';
-
-    const email = writable('');
+    import { authState } from './store';
+    import { email } from './store';
+    
     const error = writable('');
-    const api_url = import.meta.env.VITE_APP_API_URL;
+    const api_url = env.PUBLIC_API_URL;
 
     let emailInput: HTMLInputElement;
     onMount(() => {
@@ -19,7 +19,8 @@
      
     async function handleLinkAuth(event: Event) {
         event.preventDefault();
-        $isSigningIn = true;
+        $authState.isSigningIn = true;
+        $authState.expiresAt = Date.now() + 1000 * 60 * 2;
         console.log($email, linkAuthUrl, linkAuthUrl + $email);
         await fetch(linkAuthUrl + $email,{});
     }
@@ -37,7 +38,7 @@
             <h5 class=
             "mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
             >
-                {import.meta.env.VITE_APP_NAME}
+                {env.PUBLIC_APP_NAME_APP_NAME}
             </h5>
             <div class=
             "w-full font-normal text-gray-700 dark:text-gray-400"
@@ -70,7 +71,7 @@
                 /> -->
 
                 <button 
-                disabled = {$isSigningIn} 
+                disabled = {$authState.isSigningIn} 
                 type="submit" 
                 class="mt-4
                 btn variant-filled-primary hover:variant-filled-secondary 
@@ -85,10 +86,10 @@
                 <div class="border-t mt-4 mb-4 border-gray-500"></div>
                 <button 
                 on:click={() => {
-                    $isSigningIn = true;
+                    $authState.isSigningIn = true;
                     window.location.href = googleAuthUrl
                 }}
-                disabled = {$isSigningIn}
+                disabled = {$authState.isSigningIn}
                 type="button" 
                 class="
                 mt-4

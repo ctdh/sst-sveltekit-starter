@@ -4,7 +4,7 @@ import { StorageStack } from "./StorageStack";
 
 export function FrontendStack({ stack, app }: StackContext) {
     const { api } = use(ApiStack);
-    const { bucket } = use(StorageStack);
+    const { bucket, cluster } = use(StorageStack);
   
     // Define our React app
     const site: SvelteKitSite = new SvelteKitSite(stack, "SvelteSite", {
@@ -12,19 +12,22 @@ export function FrontendStack({ stack, app }: StackContext) {
             
         // Pass in our environment variables
         environment: {
-            VITE_APP_STAGE: app.stage,
-            VITE_APP_API_URL: api.url,
-            VITE_APP_REGION: app.region,
-            VITE_APP_BUCKET: bucket.bucketName,
-            VITE_APP_MODE: app.stage,
+            // NO Secrets in here.... (see AuthStack for secrets)
+            // clientSide: import { env } from '$env/dynamic/private';
+            // clientSide: import { env } from '$env/dynamic/public';
+            // const apiUrl = env.VITE_APP_API_URL;
+            PUBLIC_STAGE: app.stage,
+            PUBLIC_API_URL: api.url,
+            PUBLIC_REGION: app.region,
+            PUBLIC_BUCKET: bucket.bucketName,
+            PUBLIC_MODE: app.stage,
 
-            VITE_APP_NAME: process.env.APP_NAME || '',
-            VITE_APP_SELF_REG: process.env.SELF_REG || 'false',
-            VITE_APP_ADMIN_USER_ROLE: process.env.ADMIN_USER_ROLE || '',
-            VITE_APP_ADMIN_USER_EMAIL: process.env.ADMIN_USER_EMAIL || '',
-            // TODO: VITE_APP_MANUAL_REG: process.env.MANUAL_REG || 'false',
+            PUBLIC_APP_NAME: process.env.APP_NAME || '',
+            PUBLIC_SELF_REG: process.env.SELF_REG?.toLocaleLowerCase() || 'false',
+            PUBLIC_ADMIN_USER_ROLE: process.env.ADMIN_USER_ROLE || '',
+            PUBLIC_ADMIN_USER_EMAIL: process.env.ADMIN_USER_EMAIL || '',
         },
-    
+     
     });
     
     // api.url has correct protocol alread (always https)
@@ -44,7 +47,7 @@ export function FrontendStack({ stack, app }: StackContext) {
     });
 
     app.addDefaultFunctionEnv({
-        "PUBLIC_SITE_URL": site_url 
+        "VITE_APP_SITE_URL": site_url 
       })
 
     const region = app.region;

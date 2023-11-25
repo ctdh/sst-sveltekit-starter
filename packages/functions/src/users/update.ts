@@ -1,6 +1,5 @@
 import { ApiHandler } from 'sst/node/api';
-import { useSession } from 'sst/node/auth';
-import { User } from '@types/users';
+import type { User } from '../../../types';
 import { updateUserByID } from '../../../core/src/users';
 
 type Request = {
@@ -9,20 +8,20 @@ type Request = {
 
 // takes a POST request with a userInfo:Users object
 // returns userInfo:Users object
-export const handler = ApiHandler(async (req: <body: Users>) => {
-    const session = await useSession();
-    if (!session) {
-        return {
-            statusCode: 401,
-            body: JSON.stringify({ error: 'Unauthorized' })
-        };
-    }
-    const user = await updateUserByID(req.body);
+export const main = ApiHandler(async (_evt) => {
+
+    const data = JSON.parse(_evt.body || "{}");
+
+    const res = await updateUserByID(data);
+
+    console.log('getUserByID res:' + JSON.stringify(res));
     return {
-        statusCode: 200,
-        body: JSON.stringify({ user })
-    };
-}
+		statusCode: 200,
+		body: JSON.stringify({ 
+			res
+		 })
+	};
+});
 
 // export const handler = ApiHandler(async () => {
     // takes a POST request with user info
@@ -32,9 +31,4 @@ export const handler = ApiHandler(async (req: <body: Users>) => {
 // unless user.role === 'admin' then 
 // get user from db by id is user.id === session.userid
 
-    return {
-		statusCode: 200,
-		body: JSON.stringify({ 
-		 })
-	};
-});
+;

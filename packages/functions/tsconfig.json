@@ -6,7 +6,8 @@
     "baseUrl": ".",
     "paths": {
       "@sst-sveltekit-template/core/*": ["../core/src/*"],
-      "$shared_types/types/*": ["../../types/*"]
+      "shared_types": ["../types"],
+      "classes": ["../core"]
     }
   }
 }

@@ -8,7 +8,7 @@ import { AuthStack } from "./stacks/AuthStack";
 export default {
   config(_input) {
     return {
-      name: "template",
+      name: "sst-svelte-starter",
       region: "us-east-1",
     };
   },

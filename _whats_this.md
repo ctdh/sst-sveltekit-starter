@@ -10,9 +10,10 @@ The SST (Serverless Stack) framework is designed to build serverless application
 - [/packages](#packages)
 - [/packages/core/src](#packagescoresrc)
 - [/packages/frontend](#packagesfrontend)
-- [packages/functions](#functionspackage)
+- [/packages/functions](#functionspackage)
 - [/packages/functions/src](#functionssrc)
 - [/packages/functions/migrations](#functionsmigrations)
+- [/packages/types](#types)
 
 ### /
 
@@ -60,6 +61,10 @@ Contains the actual Lambda function code and handlers.
 ### /packages/functions/migrations
 
 Used for database migration scripts, ensuring your database schema is up-to-date and consistent with your application's data models.
+
+### /packages/types
+
+A single source of types across the app.
 
 - **Scope:** Server-side logic and data handling.
 
