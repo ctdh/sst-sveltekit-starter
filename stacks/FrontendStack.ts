@@ -46,13 +46,12 @@ export function FrontendStack({ stack, app }: StackContext) {
     app.addDefaultFunctionEnv({
         "PUBLIC_APP_SITE_URL": site_url 
         })
-    
 
     // set CORS on API Gateway
     api.setCors({
+        allowOrigins: [site_url],
         allowMethods: ["ANY"],  
         allowHeaders: ["*"],  
-        allowOrigins: ["*"],
     });
 
 

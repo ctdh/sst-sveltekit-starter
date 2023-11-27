@@ -5,8 +5,8 @@ import { Config} from "sst/constructs";
 import { FunctionStack } from "./FunctionStack";
 
 export function AuthStack({ stack }: StackContext) {
-    // const { site, site_url } = use(FrontendStack);
-    // const { api } = use(ApiStack);
+    const { site, site_url } = use(FrontendStack);
+    const { api } = use(ApiStack);
     const { role_SES } = use(FunctionStack);
  
     const auth: Auth = new Auth(stack, "Auth", {

@@ -6,5 +6,9 @@
     "us-east-1d",
     "us-east-1e",
     "us-east-1f"
-  ]
+  ],
+  "hosted-zone:account=207103105827:domainName=pathwayanalytics.com:region=us-east-1": {
+    "Id": "/hostedzone/Z3EVR19UG114IS",
+    "Name": "pathwayanalytics.com."
+  }
 }

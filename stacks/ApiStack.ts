@@ -9,23 +9,30 @@ import * as iam from "aws-cdk-lib/aws-iam";
 export function ApiStack({ stack, app }: StackContext) {
  const { table } = use(StorageStack);
  const { cluster } = use(StorageStack);
- 
+ const api_sub_domain =  app.stage === 'prod' ?  `api.${process.env.API_DOMAIN}` : `${app.stage}-api.${process.env.API_DOMAIN}`;
+ const jwt_issuer = `https://${api_sub_domain}/`;
+ console.log('api_issuer: ', jwt_issuer);
+
   // Create the API
   const api = new Api(stack, "Api", {
-    authorizers: {  
-      jwt_auth: {  
-        type: "jwt",  
-        jwt: {  
-          issuer: app.stage === "prod" ? `https://${process.env.DOMAIN}/`: `http://localhost:5173/`,
-          audience: [
-            app.stage === "prod" ? `https://${process.env.DOMAIN}/`: `http://localhost:5173/`,
-            "gq6r4c5n5q2t9j7mD2J5WQY8s9",
-          ],  
-        },  
-      },  
-    },  
+    customDomain: {
+      domainName: api_sub_domain,
+      hostedZone: process.env.API_DOMAIN,
+    },
+    // authorizers: {  
+    //   jwt_auth: {  
+    //     type: "jwt",  
+    //     jwt: {
+    //       issuer: jwt_issuer,  
+    //       audience: [
+    //         app.stage === "prod" ? `https://${api_sub_domain}/`: `http://localhost:5173/`,
+    //         "gq6r4c5n5q2t9j7mD2J5WQY8s9",
+    //       ],  
+    //     },  
+    //   },  
+    // },  
     defaults: {
-    authorizer: 'jwt_auth',
+    authorizer: 'iam',
     function: {
       bind: [
         table, 
@@ -40,12 +47,37 @@ export function ApiStack({ stack, app }: StackContext) {
       //     handler:          "packages/functions/src/session/session.handler",
       //   }
       // },
-      "POST /users":        "packages/functions/src/users/create.main",
-      "GET /users/{id}":    "packages/functions/src/users/get.main",
-      "GET /users":         "packages/functions/src/users/list.main",
-      "PUT /users/{id}":    "packages/functions/src/users/update.main",
-      "DELETE /users/{id}": "packages/functions/src/users/delete.main",
-      
+      "POST /users":        {
+        authorizer:         "iam",
+        function: {
+          handler:          "packages/functions/src/users/create.main"
+        }
+      },
+      "GET /users/{id}":    {
+        authorizer:         "iam",
+        function: {
+          handler:          "packages/functions/src/users/get.main"
+        }
+      },
+      "GET /users":         {
+        authorizer:         "iam",
+        function: {
+          handler:          "packages/functions/src/users/list.main"
+        }
+      },
+      "PUT /users/{id}":    {
+        authorizer:         "iam",
+        function: {
+          handler:          "packages/functions/src/users/update.main"
+        }
+      },
+      "DELETE /users/{id}": 
+      {
+        authorizer:         "iam",
+        function: {
+          handler:          "packages/functions/src/users/delete.main"
+        }
+      },
     },
   });
 
