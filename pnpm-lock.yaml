@@ -37,8 +37,8 @@ importers:
         specifier: 10.3.0
         version: 10.3.0
       sst:
-        specifier: 2.36.6
-        version: 2.36.6
+        specifier: 2.36.7
+        version: 2.36.7
       typescript:
         specifier: ^5.3.2
         version: 5.3.2
@@ -59,8 +59,8 @@ importers:
         specifier: ^20.9.0
         version: 20.10.0
       sst:
-        specifier: 2.36.6
-        version: 2.36.6
+        specifier: 2.36.7
+        version: 2.36.7
       vitest:
         specifier: ^0.34.6
         version: 0.34.6
@@ -175,8 +175,8 @@ importers:
         specifier: ^20.9.0
         version: 20.10.0
       sst:
-        specifier: 2.36.6
-        version: 2.36.6
+        specifier: 2.36.7
+        version: 2.36.7
       vitest:
         specifier: ^0.34.6
         version: 0.34.6
@@ -4138,7 +4138,7 @@ packages:
     resolution: {integrity: sha512-rraC8NXWOEjhADbZe9QBNzLAN5Q3fsTPQtBV+fEVj6xKIgDgNiEVE6ZNfHpZOqfQ21YUzfVNUXLOEZquYvQPPg==}
     dependencies:
       leven: 2.1.0
-      minimist: 1.2.6
+      minimist: 1.2.8
 
   /compress-commons@4.1.2:
     resolution: {integrity: sha512-D3uMHtGc/fcO1Gt1/L7i1e33VOvD4A9hfQLP+6ewd+BvG/gQ84Yh4oftEhAdjSMgBgwGL+jsppT7JYNpo6MHHg==}
@@ -5825,6 +5825,7 @@ packages:
 
   /minimist@1.2.6:
     resolution: {integrity: sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==}
+    dev: true
 
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
@@ -5876,7 +5877,7 @@ packages:
       duplexify: 4.1.2
       help-me: 3.0.0
       inherits: 2.0.4
-      minimist: 1.2.6
+      minimist: 1.2.8
       mqtt-packet: 6.10.0
       pump: 3.0.0
       readable-stream: 3.6.2
@@ -6823,8 +6824,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /sst@2.36.6:
-    resolution: {integrity: sha512-N5LkreTzAKuQdph1TJVHa4EjR7R2Q571UJ+Jl6yk5/GDaRVgyBWhB4HxOmkOHghLHQu8SnGDPqnGCQJKilJPug==}
+  /sst@2.36.7:
+    resolution: {integrity: sha512-SPuUelrMVjECOYfLxJpbJZW+42MjcFTYm/M6nfDndsCzsF2CBdziw6x3/5D2TzDNMooIDV6c3vyj08u5CEhvTw==}
     hasBin: true
     peerDependencies:
       '@sls-next/lambda-at-edge': ^3.7.0
