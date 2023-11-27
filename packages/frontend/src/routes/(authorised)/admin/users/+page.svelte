@@ -1,11 +1,9 @@
 <!-- src/routes/users/+page.svelte -->
 <script lang="ts">
   /** @type {import('./$types').PageData} */
-	import { onMount } from 'svelte';
-  import { env } from '$env/dynamic/public';
-  import  { User } from '../../../../../../core/user';
-  import  type { User as UserType } from '../../../../../../core/user';
   import { Input, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox, TableSearch } from 'flowbite-svelte';
+	import { onMount } from 'svelte';
+  import type { User as UserType } from '../../../../../../core/user';
 
   // This will receive the props from +page.server.ts
   import type { ExtendedUser } from './+page.server'; 
@@ -28,7 +26,7 @@
 
   async function updateUser(user: ExtendedUser) : Promise<void>{
       user.isEditing = false;
-      const userToUpdate: User = {
+      const userToUpdate: UserType = {
             id: user.id,
             email: user.email,
             firstName: user.firstName,
@@ -37,7 +35,7 @@
         };
       try {
       //   // const apiEndpoint = env.PUBLIC_API_URL;
-      const response = await User.createUpdate(userToUpdate);
+      // // const response = await User.createUpdate(userToUpdate);
       // } catch (error) {
       //     console.error('Network error:', error);
       // }

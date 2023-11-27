@@ -10,8 +10,7 @@ export function ApiStack({ stack, app }: StackContext) {
  const { table } = use(StorageStack);
  const { cluster } = use(StorageStack);
  const api_sub_domain =  app.stage === 'prod' ?  `api.${process.env.API_DOMAIN}` : `${app.stage}-api.${process.env.API_DOMAIN}`;
- const jwt_issuer = `https://${api_sub_domain}/`;
- console.log('api_issuer: ', jwt_issuer);
+//  const jwt_issuer = `https://${api_sub_domain}/`;
 
   // Create the API
   const api = new Api(stack, "Api", {

@@ -3,6 +3,8 @@
 // hooks redirects to the login page if the session token is missing
 
 import type { RequestHandler } from '@sveltejs/kit';
+import  { useSession, type SessionTypes } from 'sst/node/auth'; 
+import type { Handle } from '@sveltejs/kit';
 
 interface UserLocals {
     user: {
@@ -19,16 +21,29 @@ interface UserLocals {
 interface ExtendedServerRequest extends RequestHandler {
     locals: UserLocals;
   }
-const unProtectedRoutes = [
+
+
+  const unProtectedRoutes = [
     '/login', 
     '/public',
     '/callback',
-];
+]; 
 
-// export async function handle({ event, resolve}){
-//     const urlIsProtected = !unProtectedRoutes.includes(event.url.pathname);
-//     console.log('urlIsProtected: ',event.url.pathname + ' ' + urlIsProtected);
-//     const cookies = event.cookies.getAll();
-//     console.log('./hooks.ts handle.cookies: ', JSON.stringify(cookies));
-//     return resolve(event);
-// }
+export const handle: Handle = async ({ event, resolve }): Promise<Response> => {
+  const session: SessionTypes = useSession();
+  const urlIsProtected = !unProtectedRoutes.includes(event.url.pathname);
+  if (!session) {
+    // No session found, redirect to login
+      return Response.redirect('/login');
+  } else {
+    // Validate the session
+    if (urlIsProtected && session.public) {
+      // Invalid session, redirect to login
+      return Response.redirect('/login');
+    }
+    // Session is valid, proceed with the request
+    return resolve(event);
+  }
+
+};
+
