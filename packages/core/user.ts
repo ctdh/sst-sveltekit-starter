@@ -40,10 +40,10 @@ export class User {
    * First of either ID or email is used
    * @param {string} id - The ID of the user
    * @param {string} email - The email of the user
-   * @returns {Promise<User>} The user object
+   * @returns {Promise<User>} User - The user object
    */
-    static async getByIdOrEmail(idOrEmail: string): Promise<string> {
-        console.log('--- /packages/core/users.ts User.getByIdOrEmail', idOrEmail);
+    static async getByIdOrEmail(idOrEmail: string): Promise<User> {
+        console.log('---***** /packages/core/users.ts User.getByIdOrEmail', idOrEmail);
         try {
             const result = await SQL.DB
                 .selectFrom('users')
@@ -62,7 +62,7 @@ export class User {
 
             const user =  new User(result.id, result.email, result.firstName, result.lastName, result.picture, result.roles);
             console.log('--- /packages/core/users.ts User.getByIdOrEmail user: ', JSON.stringify(user));
-            return JSON.stringify(user);
+            return user;
         } catch (error) {
         console.error(error);
         throw error;
@@ -72,11 +72,12 @@ export class User {
     /**
    * Method to create or update the user object
    * @param {User} User - The user object to create or update
-   * @returns {Promise<String>} The new user object created or updated
+   * @returns {Promise<User>} User - The new user object created or updated
    */
-    static async createUpdate(user: User): Promise<string> {
+    static async createUpdate(user: User): Promise<User> {
         try {
             if (!user.id) {
+                console.log('---******* /packages/core/users.ts User.createUpdate', 'creating new user');
                 user.id = uuid();
             }
             const response = await SQL.DB
@@ -100,33 +101,35 @@ export class User {
             })
             )
             .execute();
-            return JSON.stringify(user);
+            return user;
         } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
-
     /**
    * Method to return a list filtered on the search criteria 
    * returns all if no criteria provided
    * makes partial matches on all criteria provided using LIKE
    * email: %my@email% will match any email containing email
-   * @param {UserFilter} UserFilter - The user object with the criteria to filter on (allows id: null and email: null)
-   * @returns {Promise<string[]>} The filtered list of users objects
+   * @param {UserFilter | null} UserFilter | null - The user object with the criteria to filter on (allows id: null and email: null)
+   * @returns {Promise<User[]>} User[] - The filtered list of users objects
    */
-    static async filterListUser(user: UserFilter): Promise<string> {
+    static async filterListUser(user: UserFilter | null): Promise<User[]> {
         try {
-            const { id, email, firstName, lastName } = user;
-            let query = SQL.DB.selectFrom('users');
-        
-            if (id) query = query.where('id', 'like', `%${id}%`);
-            if (email) query = query.where('email', 'like', `%${email}%`);
-            if (firstName) query = query.where('firstName', 'like', `%${firstName}%`);
-            if (lastName) query = query.where('lastName', 'like', `%${lastName}%`);
-        
+            let query = SQL.DB
+                .selectFrom('users')
+                .selectAll()
+            if (!!user) {
+                const { id, email, firstName, lastName } = user;
+                if (id) query = query.where('id', 'like', `%${id}%`);
+                if (email) query = query.where('email', 'like', `%${email}%`);
+                if (firstName) query = query.where('firstName', 'like', `%${firstName}%`);
+                if (lastName) query = query.where('lastName', 'like', `%${lastName}%`);
+            }
             const result: any[] = await query.execute();
+            console.log('--- /packages/core/users.ts User.filterListUser', `result: ${result}`);
         
             if (!result || result.length === 0) {
             throw new Error('User not found');
@@ -135,7 +138,7 @@ export class User {
             // Map the result to User instances
             const users: User[] = result.map(userResult => new User(userResult.id, userResult.email, userResult.firstName, userResult.lastName, userResult.picture, userResult.roles));
         
-            return JSON.stringify(users);
+            return users;
         } catch (error) {
             console.error(error);
             throw error;
@@ -174,16 +177,15 @@ export class User {
     * @param {Role} newRole - The new role to be assigned
     * @param {id?} id - The id of the user object to update
     * @param {email?} email - The email of the user object to update
-    * @returns {Promise<User>} The updaetd user object
+    * @returns {Promise<User>} User - The updaetd user object
     */
-    static async assignRole(newRole: Role, id?: string, email?: string): Promise<string> {
+    static async assignRole(newRole: Role, id?: string, email?: string): Promise<User> {
         if (!id && !email) {
             throw new Error('You must provide either an id or an email to assign a role');
         }
         
         try {
-            const userJson = await User.getByIdOrEmail(id ||'');
-            const user = JSON.parse(userJson);
+            const user = await User.getByIdOrEmail(id ||'');
             const existingRoles = user.roles || '';
             const roles = existingRoles ? existingRoles.split(',') : [];
         
@@ -215,7 +217,7 @@ export class User {
         
             // Fetch the updated user record from the database
             const updatedUser = await User.getByIdOrEmail(id || '');
-            return String(updatedUser);
+            return updatedUser;
         } catch (error) {
             console.error(error);
             throw error;
@@ -228,16 +230,15 @@ export class User {
     * @param {Role} delRole - The role to be revoked
     * @param {id?} id - The id of the user object to update
     * @param {email?} email - The email of the user object to update
-    * @returns {Promise<User>} The updaetd user object
+    * @returns {Promise<User>} User - The updaetd user object
     */
-    static async revokeRole(delRole: Role, id?: string, email?: string): Promise<string> {
+    static async revokeRole(delRole: Role, id?: string, email?: string): Promise<User> {
         if (!id && !email) {
         throw new Error('You must provide either an id or an email to revoke a role');
         }
     
         try {
-        const userJson = await User.getByIdOrEmail(id || email || '');
-        const user = JSON.parse(userJson);
+        const user = await User.getByIdOrEmail(id || email || '');
         const existingRoles = user.roles || '';
         const roles = existingRoles ? existingRoles.split(',') : [];
     

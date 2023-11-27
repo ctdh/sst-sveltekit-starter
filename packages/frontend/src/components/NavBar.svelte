@@ -15,6 +15,9 @@
   import { env } from '$env/dynamic/public';
   import { goto } from '$app/navigation';
   import type { User } from '../../../core/user';
+	import { onMount } from 'svelte';
+  // import { favicon } from '../../static/favicon.png';
+  // import { usericon } from '../../static/usericon.png';
 
   let user: User
   let userName: string | null | undefined
@@ -23,21 +26,17 @@
   let appName = env.PUBLIC_APP_NAME;
   let userStoreValue: string;
 
-  activeUrl = $page.url.pathname;
-  $: user = $userStore;
-    // Subscribe to the userStore and log whenever its value changes
-
-    $: activeUrl = $page.url.pathname; 
-    $: email = $userStore ? $userStore.email : null;
-    $: str = JSON.stringify($userStore);
-    console.log('str: ',str);
-
-
+  onMount(async () => {
+    activeUrl = $page.url.pathname;
+      user = $userStore;
+      // Subscribe to the userStore and log whenever its value changes
+      activeUrl = $page.url.pathname; 
+      email = $userStore ? $userStore.email : null;
+  })
   </script>
-{str}
 <Navbar fluid={true}>
   <NavBrand href="/">
-    <img src="favicon.png" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+    <img src="/favicon.png" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
     <span class="
       self-center 
       whitespace-nowrap 
@@ -48,7 +47,7 @@
   </NavBrand>
   <div class="flex items-center md:order-2">
     <LightSwitch class="mx-4"/>
-    <Avatar class="cursor-pointer" id="avatar-menu" src="usericon.png" />
+    <Avatar class="cursor-pointer" id="avatar-menu" src="/usericon.png" />
     <NavHamburger class="cursor-pointer" class1="w-full md:flex md:w-auto md:order-1" />
   </div>
   <NavUl >

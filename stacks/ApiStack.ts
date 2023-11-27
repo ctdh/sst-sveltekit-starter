@@ -1,5 +1,7 @@
 import { Api, StackContext, use } from "sst/constructs";
 import { StorageStack } from "./StorageStack";
+// first create the authStack then create the apiStack and thn attach it to the authStack
+// https://discord.com/channels/983865673656705025/1168593774302208071/1168594348330471506
 
 import * as iam from "aws-cdk-lib/aws-iam";
 // import { Role as iam} from "aws-cdk-lib/aws-iam";
@@ -10,10 +12,24 @@ export function ApiStack({ stack, app }: StackContext) {
  
   // Create the API
   const api = new Api(stack, "Api", {
+    authorizers: {  
+      jwt_auth: {  
+        type: "jwt",  
+        jwt: {  
+          issuer: app.stage === "prod" ? `https://${process.env.DOMAIN}/`: `http://localhost:5173/`,
+          audience: [
+            app.stage === "prod" ? `https://${process.env.DOMAIN}/`: `http://localhost:5173/`,
+            "gq6r4c5n5q2t9j7mD2J5WQY8s9",
+          ],  
+        },  
+      },  
+    },  
     defaults: {
-    authorizer: 'iam',
+    authorizer: 'jwt_auth',
     function: {
-      bind: [table, cluster],
+      bind: [
+        table, 
+        cluster],
     },
     },
     routes: {
@@ -22,19 +38,10 @@ export function ApiStack({ stack, app }: StackContext) {
       //   authorizer:         "none",
       //   function: {
       //     handler:          "packages/functions/src/session/session.handler",
-      //     environment: {
-      //       REGION:          this.region,
-      //     },
       //   }
       // },
-
       "POST /users":        "packages/functions/src/users/create.main",
-      "GET /users/{id}":    {
-        authorizer: "none",
-        function: {
-          handler: "packages/functions/src/users/get.main",
-        },
-      },
+      "GET /users/{id}":    "packages/functions/src/users/get.main",
       "GET /users":         "packages/functions/src/users/list.main",
       "PUT /users/{id}":    "packages/functions/src/users/update.main",
       "DELETE /users/{id}": "packages/functions/src/users/delete.main",

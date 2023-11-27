@@ -5,17 +5,20 @@ import { StorageStack } from "./StorageStack";
 export function FrontendStack({ stack, app }: StackContext) {
     const { api } = use(ApiStack);
     const { bucket, cluster } = use(StorageStack);
-  
+
     // Define our React app
     const site: SvelteKitSite = new SvelteKitSite(stack, "SvelteSite", {
         path: "packages/frontend",
-            
+        bind:[bucket, cluster],
         // Pass in our environment variables
         environment: {
             // NO Secrets in here.... (see AuthStack for secrets)
+            //https://docs.sst.dev/constructs/SvelteKitSite#environment-variables
+            // only env. marked PUBLIC are available on the client side
             // clientSide: import { env } from '$env/dynamic/private';
             // clientSide: import { env } from '$env/dynamic/public';
-            // const apiUrl = env.VITE_APP_API_URL;
+            // const apiUrl = env.PUBLIC_APP_API_URL;
+
             PUBLIC_STAGE: app.stage,
             PUBLIC_API_URL: api.url,
             PUBLIC_REGION: app.region,
@@ -39,6 +42,12 @@ export function FrontendStack({ stack, app }: StackContext) {
         ? protocol + site.url + port 
         : protocol + `localhost` + port;
 
+    // now we have it, add the site url env. variable
+    app.addDefaultFunctionEnv({
+        "PUBLIC_APP_SITE_URL": site_url 
+        })
+    
+
     // set CORS on API Gateway
     api.setCors({
         allowMethods: ["ANY"],  
@@ -46,9 +55,6 @@ export function FrontendStack({ stack, app }: StackContext) {
         allowOrigins: ["*"],
     });
 
-    app.addDefaultFunctionEnv({
-        "VITE_APP_SITE_URL": site_url 
-      })
 
     const region = app.region;
 

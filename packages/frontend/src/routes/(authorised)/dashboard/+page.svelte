@@ -8,10 +8,12 @@
     // // Subscribe to the userStore and log whenever its value changes
     // $: userStoreValue = JSON.stringify($userStore);
     // $: user = $userStore;
+    
 
 </script>
 <h1>Dashboard</h1>
 <pre>
+
 <!-- userStore: {userStoreValue}
 userStore.email: {user.email} -->
 </pre>

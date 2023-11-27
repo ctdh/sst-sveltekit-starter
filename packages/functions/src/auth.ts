@@ -12,8 +12,20 @@ declare module 'sst/node/auth' {
             properties: {
                 userId: string;
             };
-            options: {
-                // 
+            options: {  // These are a set of predefined claims which are not mandatory but recommended, to provide a set of useful, interoperable claims. 
+                //  algorithm?: Algorithm  // algorithm used to sign the token
+                // mutatePayload?: boolean //
+                // expiresIn?: number | string  // expires at epoch time
+                // notBefore?: number // not valid before epoch time
+                // jti?: string  // unique identifier for the token
+                // aud?: string | string[]  // audience
+                // iss?: string  // issued by a URI representing the issuer
+                // sub?: string  // subject
+                // nonce?: string // number used once
+                // kid?: string // key id
+                // header?: JwtHeader 
+                // noTimestamp?: boolean  // if true, do not validate the expiration of the token
+                // clockTimestamp?: number  // epoch time now in seconds
             };
             iat: number;
             exp: number;
@@ -144,8 +156,7 @@ async function handleClaim(claims:Record<string,any>): Promise<User | undefined>
     console.log('handleClaim', claims);
 
     // get user from db by email if they exist
-    const existingUserJson:string = await (User.getByIdOrEmail(claims.email as string));
-    const existingUser:User = JSON.parse(existingUserJson);
+    const existingUser:User = await (User.getByIdOrEmail(claims.email as string));
     console.log('auth.ts handleClaim existingUser', existingUser);
 
     if (adminEmail === claims.email && !existingUser) {
@@ -168,8 +179,7 @@ async function handleClaim(claims:Record<string,any>): Promise<User | undefined>
     //    Update existing user with the new admin role and set id in existingUser if needed
         console.log('Admin user exists adding admin role');
         let adminUser: User = existingUser
-        const adminUserJson: string = await User.assignRole(Role.ADMIN, existingUser.id);   
-        adminUser = JSON.parse(adminUserJson);
+        adminUser = await User.assignRole(Role.ADMIN, existingUser.id);   
         return adminUser;     
     } 
     // ELSE IF selfreg and notExistingUser then create a new user 
@@ -177,7 +187,7 @@ async function handleClaim(claims:Record<string,any>): Promise<User | undefined>
         // create a new user
         console.log('User does not exists adding new user');
 
-        const responseJson: string = await User.createUpdate({
+        const response: User = await User.createUpdate({
             id: uuid(),
             email: claims.email as string,
             picture: claims.picture,
@@ -185,7 +195,6 @@ async function handleClaim(claims:Record<string,any>): Promise<User | undefined>
             lastName: claims.family_name,
             roles: ''
         });
-        const response: User = JSON.parse(responseJson);
         return response;
     } else {
         console.log('User ignored');

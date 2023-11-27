@@ -1,6 +1,6 @@
 import { ApiHandler } from 'sst/node/api';
-import { useSession } from 'sst/node/auth';
-import { getUserByID } from '../../../core/src/users';
+// import { useSession } from 'sst/node/auth';
+// import { getByIDOrEmail } from '../../../core/users';
 
 export const handler = ApiHandler(async () => {
 // returns user info of userid 

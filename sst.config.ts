@@ -19,9 +19,9 @@ export default {
     }
     app
     .stack(StorageStack)
-    .stack(ApiStack)
-    .stack(FunctionStack)
-    .stack(FrontendStack)
-    .stack(AuthStack)
+    .stack(ApiStack) // depends on auth and then attach api (graphql ApiAuthorizer error)
+    .stack(FunctionStack) 
+    .stack(FrontendStack) //requires api url
+    .stack(AuthStack) // requires SES permissions from function stack
   },
 } satisfies SSTConfig;

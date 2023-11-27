@@ -1,5 +1,5 @@
 import { ApiHandler } from 'sst/node/api';
-import { useSession } from 'sst/node/auth';
+import { SessionTypes, useSession } from 'sst/node/auth';
 // import type { User } from 'shared_types';
 import { User, UserFilter } from '../../../core/user';
 
@@ -8,31 +8,28 @@ export const main = ApiHandler(async (event) => {
 	// returns user info of userid 
 
 	const session = useSession();
-	if (!session.type || session.type !== 'user') {
+	if ( !session?.type || session.type === 'public' ) {
 		return {
 			redirect: '/login',
 			statusCode: 401,
 			body: 'Unauthorized user session.type'
 		};
-	}
+	} else if (!event.pathParameters) {
 
-	// !event.pathParameters as this is a GET request
-	// othrwise we would use !event.body
-
-	if (!event.pathParameters) {
+		// !event.pathParameters as this is a GET request
+		// othrwise we would use !event.body
 		return {
 			statusCode: 400,
 			body: 'Badly formed request'
 		};		
 	} else {
-		// takes first id or email
-		console.log(' --/functions/src/users/get.ts API handler pathParams: ' + JSON.stringify(event.pathParameters) );
-		const userFilter: UserFilter = { ...event.pathParameters };
-		const usersList = await User.filterListUser(userFilter);
-		
+		let data:UserFilter = event.queryStringParameters as unknown as UserFilter;
+		console.log('--- /user/get.ts data: ' + JSON.stringify(data));
+		const res = await User.filterListUser(data);
+
 		return {
 			statusCode: 200,
-			body: JSON.stringify(usersList)
+			body: JSON.stringify(res)
 		};
 	}
 

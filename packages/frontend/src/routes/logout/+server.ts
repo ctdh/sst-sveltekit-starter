@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({ request }) => {
 
     // Append the Set-Cookie headers one by one
     response.headers.append('Set-Cookie', `sessionToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Lax`);
-    response.headers.append('Set-Cookie', `Roles=''; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Lax`);
+    response.headers.append('Set-Cookie', `roles=''; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Lax`);
     response.headers.append('Location', '/login');
 
     // Return the response
