@@ -116,20 +116,6 @@ function getSessionParameter (userId: string)
     redirect: string;
 } 
 {
-    console.log('getSessionParameter userId', userId);
-    console.log({
-        type: 'user' as keyof SessionTypes,
-        properties: {
-            userId: userId,
-        },
-        options: {
-            // expiresIn: 60 * 60 * 24 * 1000, // 1 day
-            // iat: Date.now(),
-            // exp: Date.now() + 60 * 60 * 24 * 1000, // 1 day
-        },
-        // embed the url to land on after login
-        redirect: `${Config.SITE_URL}/dashboard`
-    });
     return {
         type: 'user' as keyof SessionTypes,
         properties: {
@@ -140,65 +126,60 @@ function getSessionParameter (userId: string)
         },
         // redirect to callback where there is a server side endpoint to set the cookie
         // /callback then sets localstorage and redirects to the authorised pages
-        redirect: `${Config.SITE_URL}/callback`
+        redirect: `${Config.SITE_URL}/`
     };
 }
 
 // function to take the claim onSuccess and 
-// and find a matching user email if it exists
-// add ADMIN_USER_ROLE if userId matches ADMIN_USER_EMAIL
-// otherwise create if SELF_REG then create a new user
+// if claims.email matches ADMIN_USER_EMAIL
+//   the createUpdate a new user with ADMIN_USER_ROLE
+// else if SELF_REG then create a new user
+// else if user exists then return user
+// else ignore
 async function handleClaim(claims:Record<string,any>): Promise<User | undefined> {
 
+    console.log('---*** auth.ts handleClaim claims', claims);
     const adminEmail:string = Config.ADMIN_USER_EMAIL || '';
     const selfReg:boolean = Boolean(Config.SELF_REG) || false;
 
-    console.log('handleClaim', claims);
-
-    // get user from db by email if they exist
-    const existingUser:User = await (User.getByIdOrEmail(claims.email as string));
-    console.log('auth.ts handleClaim existingUser', existingUser);
-
-    if (adminEmail === claims.email && !existingUser) {
-        console.log('Admin user does not exist');
-        const newUser = User.createUpdate({
+    // is adminEmail === claims.email
+    if (adminEmail === claims.email) {
+        const newUser: User = {
             id: uuid(),
             email: claims.email as string,
             picture: claims.picture,
             firstName: claims.given_name,
             lastName: claims.family_name,
             roles: Role.ADMIN
-    });
-    }
-
-    // if adminEmail then add roles
-    if (
-        adminEmail === claims.email && 
-        !existingUser.roles?.includes(Role.ADMIN)        
-    ) { 
-    //    Update existing user with the new admin role and set id in existingUser if needed
-        console.log('Admin user exists adding admin role');
-        let adminUser: User = existingUser
-        adminUser = await User.assignRole(Role.ADMIN, existingUser.id);   
-        return adminUser;     
-    } 
-    // ELSE IF selfreg and notExistingUser then create a new user 
-    else if (selfReg && !existingUser) {
-        // create a new user
-        console.log('User does not exists adding new user');
-
-        const response: User = await User.createUpdate({
-            id: uuid(),
-            email: claims.email as string,
-            picture: claims.picture,
-            firstName: claims.given_name,
-            lastName: claims.family_name,
-            roles: ''
-        });
-        return response;
+        };
+        console.log('---*** auth.ts createUpdate(newUser) Admin User: ', newUser);
+        const createUser = User.createUpdate(newUser);
+        return newUser;
+    } else if ( selfReg ) {
+        const existingUser = await User.getByIdOrEmail(claims.email as string);
+        if (!existingUser) {
+            const newUser: User = {
+                id: uuid(),
+                email: claims.email as string,
+                picture: claims.picture,
+                firstName: claims.given_name,
+                lastName: claims.family_name,
+                roles: ''
+            };
+            console.log('---*** auth.ts createUpdate(newUser) : ', newUser);
+            const createUser = User.createUpdate(newUser);
+            return newUser;
+        } else {
+            return existingUser;
+        }
     } else {
-        console.log('User ignored');
-        return existingUser;
+        const existingUser = await User.getByIdOrEmail(claims.email as string);
+        if (!existingUser) {
+            console.log('---*** auth.ts handleClaim error user not found', existingUser);
+            return existingUser;
+        } else {
+            return existingUser;
+        }
     }
 }
 

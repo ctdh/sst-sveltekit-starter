@@ -3,9 +3,10 @@
 // hooks redirects to the login page if the session token is missing
 
 /** @type {import('@sveltejs/kit').Handle} */
-// import type { RequestHandler } from '@sveltejs/kit';
+import { jwtDecode } from 'jwt-decode';
 import  { useSession, type SessionTypes } from 'sst/node/auth'; 
 import type { Handle } from '@sveltejs/kit';
+import { goto } from '$app/navigation';
 
 interface UserLocals {
     user: {
@@ -23,21 +24,31 @@ interface UserLocals {
     '/public',
     '/callback',
 ]; 
-export async function handle({ event, resolve }) {
-  // const session: SessionTypes = useSession();
-  // const urlIsProtected = !unProtectedRoutes.includes(event.url.pathname);
-  // if (!session) {
-  //   // No session found, redirect to login
-  //     return Response.redirect('/login');
-  // } else {
-  //   // Validate the session
-  //   if (urlIsProtected && session.public) {
-  //     // Invalid session, redirect to login
-  //     return Response.redirect('/login');
-  //   }
-  //   // Session is valid, proceed with the request
-    return resolve(event);
-  // }
 
+
+export async function handle({ event, resolve }) {
+  // console.log('event: ', JSON.stringify(event)); 
+  // console.log('cookies: : ', JSON.stringify(event.cookies));
+  // console.log('url: : ', event.url.origin);
+
+
+  const cookies = event.cookies;
+  const urlIsProtected = !unProtectedRoutes.includes(event.url.pathname);
+  console.log('hooks.server.ts unProtectedRoutes: ', JSON.stringify(unProtectedRoutes));
+  console.log('hooks.server.ts url: ', event.url.pathname);
+  console.log('hooks.server.ts urlIsProtected: ', urlIsProtected);
+  if (!cookies) {
+  // No session found, redirect to login
+    goto('login');
+    return Response.redirect(event.url.origin+'/login');
+  } else {
+  // Validate the session
+    if (urlIsProtected && cookies) {
+      // Invalid session, redirect to login
+      return Response.redirect(event.url.origin+'/login');
+    }
+    // Session is valid, proceed with the request
+    return resolve(event);
+  }
 };
 

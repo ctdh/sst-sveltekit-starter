@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ params }) => {
         // let users: UserType[] = await response;
         let users: UserType[] = await response.json();
 
-        if (users.length === 0) {
+        if (users.length === 0 || !Array.isArray(users)) {
             return { props: { extendedUsers: [] } };
         } else {
             // Process users to create ExtendedUser array

@@ -20,7 +20,9 @@ export function AuthStack({ stack }: StackContext) {
                 new Config.Parameter(stack, "REGION", {
                     value: stack.region
                 }),
-
+                new Config.Parameter(stack, "SITE_URL", {
+                    value: site_url ?? ''
+                }),
                 new Config.Parameter(stack, "APP_NAME", {
                     value: process.env.APP_NAME ?? ''
                 }),
