@@ -3,6 +3,7 @@
   /** @type {import('./$types').PageData} */
   import { Input, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox, TableSearch } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
+  import { env } from '$env/dynamic/public'
   import type { User as UserType } from '../../../../../../core/user';
 
   // This will receive the props from +page.server.ts
@@ -34,16 +35,19 @@
             roles: user.rolesArray.join(','), // Convert rolesArray back to CSV string
         };
       try {
-      //   // const apiEndpoint = env.PUBLIC_API_URL;
+        const apiEndpoint = env.PUBLIC_API_URL + '/users?id=';
+        const response = await fetch(apiEndpoint + user.id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userToUpdate),
+        });
       // // const response = await User.createUpdate(userToUpdate);
-      // } catch (error) {
-      //     console.error('Network error:', error);
-      // }
-
-      // reassing users to trigger reactivity in the browser
       } catch (error) {
           console.error('Network error:', error);
       }
+
       users = [...users];
     }
   
@@ -65,6 +69,7 @@
 
 
 </script>
+
 {#await users}
 <p>Loading...</p>
 {:then}
