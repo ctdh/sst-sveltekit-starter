@@ -10,7 +10,7 @@ export function FrontendStack({ stack, app }: StackContext) {
     const site: SvelteKitSite = new SvelteKitSite(stack, "SvelteSite", {
         path: "packages/frontend",
         customDomain: {
-            domainName: app.stage === 'prod' ? 'starter' + process.env.DOMAIN ?? '' : 'dev-starter' + process.env.DOMAIN ?? '',
+            domainName: app.stage === 'prod' ? 'starter.' + process.env.DOMAIN ?? '' : 'dev-starter.' + process.env.DOMAIN ?? '',
             hostedZone: process.env.DOMAIN ?? '',
         },
         bind:[bucket, cluster],
