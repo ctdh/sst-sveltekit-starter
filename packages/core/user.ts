@@ -43,7 +43,7 @@ export class User {
    * @returns {Promise<User>} User - The user object
    */
     static async getByIdOrEmail(idOrEmail: string): Promise<User> {
-        console.log('---***** /packages/core/users.ts User.getByIdOrEmail', idOrEmail);
+        console.log('1. ---***** /packages/core/users.ts User.getByIdOrEmail', idOrEmail);
         try {
             const result = await SQL.DB
                 .selectFrom('users')
@@ -54,14 +54,14 @@ export class User {
                 )
                 .executeTakeFirst();
 
-            if (!result) {
-                console.log('--- /packages/core/users.ts User.getByIdOrEmail', `User ${idOrEmail} not found`);
-                throw new Error(`User ${idOrEmail} not found`);
+            if (!result?.id) {
+                console.log('2. --- /packages/core/users.ts User.getByIdOrEmail', `User ${idOrEmail} not found`);
+                return {} as User;
             }
-            console.log('--- /packages/core/users.ts User.getByIdOrEmail', `User ${result.roles} found`);
+            console.log('3. --- /packages/core/users.ts User.getByIdOrEmail', `User ${result.roles} found`);
 
             const user =  new User(result.id, result.email, result.firstName, result.lastName, result.picture, result.roles);
-            console.log('--- /packages/core/users.ts User.getByIdOrEmail user: ', JSON.stringify(user));
+            console.log('4. --- /packages/core/users.ts User.getByIdOrEmail user: ', JSON.stringify(user));
             return user;
         } catch (error) {
         console.error(error);
@@ -77,7 +77,7 @@ export class User {
     static async createUpdate(user: User): Promise<User> {
         try {
             if (!user.id) {
-                console.log('---******* /packages/core/users.ts User.createUpdate', 'creating new user');
+                console.log('5. ---******* /packages/core/users.ts User.createUpdate', 'creating new user');
                 user.id = uuid();
             }
             const response = await SQL.DB
@@ -103,7 +103,7 @@ export class User {
             .execute();
             return user;
         } catch (error) {
-            console.error(error);
+            console.error('6. ---******* /packages/core/users.ts catch error: ',error);
             throw error;
         }
     }
@@ -129,10 +129,10 @@ export class User {
                 if (lastName) query = query.where('lastName', 'like', `%${lastName}%`);
             }
             const result: any[] = await query.execute();
-            console.log('--- /packages/core/users.ts User.filterListUser', `result: ${result}`);
+            console.log('7. --- /packages/core/users.ts User.filterListUser', `result: ${result}`);
         
             if (!result || result.length === 0) {
-            throw new Error('User not found');
+                return [];
             }
         
             // Map the result to User instances
@@ -140,7 +140,7 @@ export class User {
         
             return users;
         } catch (error) {
-            console.error(error);
+            console.error('8. ---******* /packages/core/users.ts catch error: ', error);
             throw error;
         }
     }
@@ -166,7 +166,7 @@ export class User {
         
             await query.execute();
         } catch (error) {
-            console.error(error);
+            console.error('9. ---******* /packages/core/users.ts catch error: ', error);
             throw error;
         }
     }
@@ -219,7 +219,7 @@ export class User {
             const updatedUser = await User.getByIdOrEmail(id || '');
             return updatedUser;
         } catch (error) {
-            console.error(error);
+            console.error('10. ---******* /packages/core/users.ts catch error: ', error);
             throw error;
         }
     }      
@@ -274,7 +274,7 @@ export class User {
         const updatedUser = await User.getByIdOrEmail(id || email || '');
         return updatedUser;
         } catch (error) {
-            console.error(error);
+            console.error('11. ---******* /packages/core/users.ts catch error:', error);
             throw error;
         }
     }

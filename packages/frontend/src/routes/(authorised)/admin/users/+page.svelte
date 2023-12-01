@@ -38,8 +38,10 @@
         const apiEndpoint = env.PUBLIC_API_URL + '/users?id=';
         const response = await fetch(apiEndpoint + user.id, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + 'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoidXNlciIsInByb3BlcnRpZXMiOnsidXNlcklkIjoiYTNmNTJhOWItMzEzNi00MWFjLWI2NmMtZjNhZGEwZTZkYjYxIn0sImlhdCI6MTcwMTM4NTA3N30.E96EQOC1I5eaoM4lmIRANF1QAbxuIsUU1AvC4EB8UPOHCg1SMHLJHq8CS_ov3FAyrjnNOKctcc_35WeO9o2Z7iftQhrKC4CxlWBGOxB47uZnZxGOiJHSjXbsaZjQ_PjqwluBIQxyN_ARE2w7SueY2FSRxGf4mBnm3Vw91f5dsHNW9D_keLtgROzcO8D51-VvES0ilVcfaIw-RB6HmsHsUETn9SO1TZAa0yyoWTkVgZUxHvOKergQ9xrd7tjbQwFk2zB6RyNRDyBCSMieytJqemp4tWohRKPrUTSnpt7xqe2iTfqV3XmY_w2efwZM_b987kmcD8iJFFKJei6JxsywDA',
             },
             body: JSON.stringify(userToUpdate),
         });

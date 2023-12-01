@@ -5,7 +5,7 @@ import { Config} from "sst/constructs";
 import { FunctionStack } from "./FunctionStack";
 
 export function AuthStack({ stack }: StackContext) {
-    const { site, site_url } = use(FrontendStack);
+    const { site_url } = use(FrontendStack);
     const { api } = use(ApiStack);
     const { role_SES } = use(FunctionStack);
  
@@ -22,6 +22,12 @@ export function AuthStack({ stack }: StackContext) {
                 }),
                 new Config.Parameter(stack, "SITE_URL", {
                     value: site_url ?? ''
+                }),
+                new Config.Parameter(stack, "API_URL", {
+                    value: api.customDomainUrl ?? ''
+                }),
+                new Config.Parameter(stack, "AWS_API_URL", {
+                    value: api.url ?? ''
                 }),
                 new Config.Parameter(stack, "APP_NAME", {
                     value: process.env.APP_NAME ?? ''
@@ -41,7 +47,7 @@ export function AuthStack({ stack }: StackContext) {
             ]),
         },
     });
-    
+
     auth.attach(stack, {
         api,
         prefix: "/auth", // optional

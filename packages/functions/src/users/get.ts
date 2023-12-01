@@ -6,11 +6,13 @@ export const main = ApiHandler(async (event) => {
 	// returns user info of userid 
 
 	const session = useSession();
+	console.log('--- /user/get.ts session ' + JSON.stringify(session));
 	// get cookie from event.headers.cookie
-	console.log('--- /user/get.ts event.headers.cookie: ' + event.headers.cookie);
-
+	console.log('--- /user/get.ts event.headers: ' + JSON.stringify(event.headers));
 	console.log('--- /user/get.ts SessionType: ' + session?.type);
+
 	if ( !session?.type || session.type === 'public' ) {
+	// if ( false ) {
 		console.log(' --/functions/src/users/get.ts API handler session.type: ' + session?.type);
 		return {
 			redirect: '/login',

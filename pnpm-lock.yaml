@@ -143,6 +143,9 @@ importers:
       svelte-check:
         specifier: ^3.6.0
         version: 3.6.2(@babel/core@7.23.3)(postcss-load-config@4.0.2)(postcss@8.4.31)(svelte@4.2.7)
+      svelte-kit-sst:
+        specifier: '2'
+        version: 2.36.7
       tailwindcss:
         specifier: ^3.3.2
         version: 3.3.5
@@ -164,6 +167,9 @@ importers:
 
   packages/functions:
     dependencies:
+      jwt-decode:
+        specifier: ^4.0.0
+        version: 4.0.0
       shared_types:
         specifier: workspace:*
         version: link:../types
@@ -274,6 +280,9 @@ packages:
   /@aws-cdk/cloud-assembly-schema@2.110.1:
     resolution: {integrity: sha512-ivyE26pQgiUd5sOXE0DE+s0TfkZDfj1Y/dhseU+k2klsS24Cfeun9fSY568wG40PRheaO5X6jjT/4tuT78P1hQ==}
     engines: {node: '>= 14.15.0'}
+    dependencies:
+      jsonschema: 1.4.1
+      semver: 7.5.4
     dev: true
     bundledDependencies:
       - jsonschema
@@ -299,6 +308,7 @@ packages:
       '@aws-cdk/cloud-assembly-schema': 2.110.1
     dependencies:
       '@aws-cdk/cloud-assembly-schema': 2.110.1
+      semver: 7.5.4
     dev: true
     bundledDependencies:
       - semver
@@ -5501,6 +5511,10 @@ packages:
       graceful-fs: 4.2.11
     dev: true
 
+  /jsonschema@1.4.1:
+    resolution: {integrity: sha512-S6cATIPVv1z0IlxdN+zUk5EPjkGCdnhN4wVSBlvoUO1tOLJootbo9CquNJmbIh4yikWHiUedhRYrNPn1arpEmQ==}
+    dev: true
+
   /jwt-decode@4.0.0:
     resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
     engines: {node: '>=18'}
@@ -7097,6 +7111,10 @@ packages:
       svelte: ^3.19.0 || ^4.0.0
     dependencies:
       svelte: 4.2.7
+    dev: true
+
+  /svelte-kit-sst@2.36.7:
+    resolution: {integrity: sha512-G3JMfiRykjGByLqQd3NZo2H1CZice8nRVYu1XAgIjsjLvr/4cxtJP/P/3VIwLVq34BTYatsDHMMtfHEh/FVzgw==}
     dev: true
 
   /svelte-preprocess@5.1.1(@babel/core@7.23.3)(postcss-load-config@4.0.2)(postcss@8.4.31)(svelte@4.2.7)(typescript@5.3.2):

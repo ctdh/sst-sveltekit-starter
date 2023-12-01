@@ -1,6 +1,6 @@
 import { ApiHandler } from 'sst/node/api';
 // import { useSession } from 'sst/node/auth';
-// import { getByIDOrEmail } from '../../../core/users';
+import { User, type Role } from '../../../core/user';
 
 export const handler = ApiHandler(async () => {
 // returns user info of userid 

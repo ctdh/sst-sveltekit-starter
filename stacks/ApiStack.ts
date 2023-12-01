@@ -7,6 +7,13 @@ import * as iam from "aws-cdk-lib/aws-iam";
 // import { Role as iam} from "aws-cdk-lib/aws-iam";
 
 export function ApiStack({ stack, app }: StackContext) {
+  // We have to work out the site url here as we need it for the API callback 
+  const protocol  = app.stage === 'prod' ? 'https://' : 'http://';
+  const port      = app.stage === 'prod' ? '' : `:${process.env.PORT}`;
+  const site_url = app.stage === 'prod'
+      ? protocol + process.env.DOMAIN + port 
+      : protocol + `localhost` + port;
+
  const { table } = use(StorageStack);
  const { cluster } = use(StorageStack);
  const api_sub_domain =  app.stage === 'prod' ?  `api.${process.env.API_DOMAIN}` : `${app.stage}-api.${process.env.API_DOMAIN}`;
@@ -18,63 +25,49 @@ export function ApiStack({ stack, app }: StackContext) {
       domainName: api_sub_domain,
       hostedZone: process.env.API_DOMAIN,
     },
-    // authorizers: {  
-    //   jwt_auth: {  
-    //     type: "jwt",  
-    //     jwt: {
-    //       issuer: jwt_issuer,  
-    //       audience: [
-    //         app.stage === "prod" ? `https://${api_sub_domain}/`: `http://localhost:5173/`,
-    //         "gq6r4c5n5q2t9j7mD2J5WQY8s9",
-    //       ],  
-    //     },  
-    //   },  
-    // },  
-    defaults: {
-    authorizer: 'iam',
-    function: {
-      bind: [
-        table, 
-        cluster],
+    cors: {
+      allowOrigins: [`https://${api_sub_domain}`, `http://localhost:5173`],
+      allowMethods: ["ANY"],
+      allowHeaders: ["*"],
+      allowCredentials: true
     },
+    defaults: {
+      authorizer: 'iam',
+      function: {
+        environment: {
+          SITE_URL: site_url,
+          API_URL: api_sub_domain,
+        },
+        bind: [
+          table, 
+          cluster]
+      },
     },
     routes: {
-      // Example toute with no authorization required
+      // Example route with no authorization required
       // "GET /session":       {
       //   authorizer:         "none",
       //   function: {
       //     handler:          "packages/functions/src/session/session.handler",
       //   }
       // },
-      "POST /users":        {
-        authorizer:         "iam",
+      "POST /users":        "packages/functions/src/users/create.main",
+
+      "GET /users/{id}":    "packages/functions/src/users/get.main",
+      // "GET /users/{id}":    {
+      //   authorizer:         "none",
+      //   function:           {
+      //     handler:          "packages/functions/src/users/get.main",
+      //   }
+      // },
+      "GET /users":         "packages/functions/src/users/list.main",
+      "PUT /users/{id}":    "packages/functions/src/users/update.main",
+      "DELETE /users/{id}": "packages/functions/src/users/delete.main",
+
+      "GET /callback":      {
+        authorizer:         "none",
         function: {
-          handler:          "packages/functions/src/users/create.main"
-        }
-      },
-      "GET /users/{id}":    {
-        authorizer:         "iam",
-        function: {
-          handler:          "packages/functions/src/users/get.main"
-        }
-      },
-      "GET /users":         {
-        authorizer:         "iam",
-        function: {
-          handler:          "packages/functions/src/users/list.main"
-        }
-      },
-      "PUT /users/{id}":    {
-        authorizer:         "iam",
-        function: {
-          handler:          "packages/functions/src/users/update.main"
-        }
-      },
-      "DELETE /users/{id}": 
-      {
-        authorizer:         "iam",
-        function: {
-          handler:          "packages/functions/src/users/delete.main"
+          handler:          "packages/functions/src/callback.main",
         }
       },
     },
@@ -93,6 +86,6 @@ export function ApiStack({ stack, app }: StackContext) {
 
   // Return the API resource
   return {
-    api,
+    api
   };
 }

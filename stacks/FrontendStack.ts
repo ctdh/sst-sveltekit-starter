@@ -1,4 +1,4 @@
-import { StackContext, SvelteKitSite, use, Config } from "sst/constructs";
+import { StackContext, SvelteKitSite, use } from "sst/constructs";
 import { ApiStack } from "./ApiStack";
 import { StorageStack } from "./StorageStack";
 
@@ -20,7 +20,8 @@ export function FrontendStack({ stack, app }: StackContext) {
             // const apiUrl = env.PUBLIC_APP_API_URL;
 
             PUBLIC_STAGE: app.stage,
-            PUBLIC_API_URL: api.url,
+            PUBLIC_AWS_API_URL: api.url,
+            PUBLIC_API_URL: api.customDomainUrl || api.url,
             PUBLIC_REGION: app.region,
             PUBLIC_BUCKET: bucket.bucketName,
             PUBLIC_MODE: app.stage,
@@ -44,22 +45,26 @@ export function FrontendStack({ stack, app }: StackContext) {
     // now we have it, add the site url env. variable
     app.addDefaultFunctionEnv({
         "PUBLIC_APP_SITE_URL": site_url 
-        })
+        });
 
-    // set CORS on API Gateway
-    api.setCors({
-        allowOrigins: [site_url],
-        allowMethods: ["ANY"],  
-        allowHeaders: ["*"],  
-    });
-
-
-    const region = app.region;
+    // // set CORS on API Gateway
+    // console.log(`allowOrigins: [${api.customDomainUrl}, ${api.url}, http://localhost:5173]`);
+    // api.setCors({
+    //     // if allowCredentials: true, then no wildcards on allowOrigins, be specific!        
+    //     allowOrigins: [`${api.customDomainUrl}, ${api.url},  http://localhost:5173`],
+    //     // allowOrigins: ["*"],
+    //     allowMethods: ["ANY"],  
+    //     allowHeaders: ["*"],
+    //     // to allow for cookie handling across domains
+    //     allowCredentials: true
+    // });
 
     // Show the url in the output
     stack.addOutputs({
         SiteUrl: site_url,
     });
+
+    const region = app.region;
     
     return {
         site,

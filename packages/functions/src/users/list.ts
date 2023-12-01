@@ -1,6 +1,5 @@
 import { ApiHandler } from 'sst/node/api';
-import { SessionTypes, useSession } from 'sst/node/auth';
-// import type { User } from 'shared_types';
+import { useSession } from 'sst/node/auth';
 import { User, UserFilter } from '../../../core/user';
 
 export const main = ApiHandler(async (event) => {

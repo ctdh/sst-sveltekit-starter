@@ -1,6 +1,5 @@
 import { ApiHandler } from 'sst/node/api';
-import type { User } from '../../../types';
-import { updateUserByID } from '../../../core/src/users';
+import { User, type Role } from '../../../core/user';
 
 type Request = {
     body: User;
@@ -12,7 +11,7 @@ export const main = ApiHandler(async (_evt) => {
 
     const data = JSON.parse(_evt.body || "{}");
 
-    const res = await updateUserByID(data);
+    const res = await User.createUpdate(data);
 
     console.log('getUserByID res:' + JSON.stringify(res));
     return {

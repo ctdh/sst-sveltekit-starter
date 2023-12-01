@@ -33,22 +33,25 @@ export async function handle({ event, resolve }) {
 
 
   const cookies = event.cookies;
+  console.log('hooks.server.ts cookies: ', JSON.stringify(cookies));
   const urlIsProtected = !unProtectedRoutes.includes(event.url.pathname);
   console.log('hooks.server.ts unProtectedRoutes: ', JSON.stringify(unProtectedRoutes));
   console.log('hooks.server.ts url: ', event.url.pathname);
   console.log('hooks.server.ts urlIsProtected: ', urlIsProtected);
-  if (!cookies) {
-  // No session found, redirect to login
-    goto('login');
-    return Response.redirect(event.url.origin+'/login');
-  } else {
-  // Validate the session
-    if (urlIsProtected && cookies) {
-      // Invalid session, redirect to login
-      return Response.redirect(event.url.origin+'/login');
-    }
-    // Session is valid, proceed with the request
-    return resolve(event);
-  }
+  // if (!cookies) {
+  // // No session found, redirect to login
+  //   goto('login');
+  //   return Response.redirect(event.url.origin+'/login');
+  // } else {
+  // // Validate the session
+  //   if (urlIsProtected && cookies) {
+  //     // Invalid session, redirect to login
+  //     return Response.redirect(event.url.origin+'/login');
+  //   }
+  //   // Session is valid, proceed with the request
+  //   return resolve(event);
+  // }
+
+  return resolve(event);
 };
 
