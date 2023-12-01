@@ -9,6 +9,10 @@ export function FrontendStack({ stack, app }: StackContext) {
     // Define our React app
     const site: SvelteKitSite = new SvelteKitSite(stack, "SvelteSite", {
         path: "packages/frontend",
+        customDomain: {
+            domainName: app.stage === 'prod' ? 'starter' + process.env.DOMAIN ?? '' : 'dev-starter' + process.env.DOMAIN ?? '',
+            hostedZone: process.env.DOMAIN ?? '',
+        },
         bind:[bucket, cluster],
         // Pass in our environment variables
         environment: {
